@@ -8,6 +8,10 @@
 
 name: Java CI with Maven
 
+env:
+  docker_image_name: academy
+  docker_tag_name: tag-1
+
 on:
   push:
     branches: [ "main" ]
@@ -31,5 +35,13 @@ jobs:
       uses: ./.github/actions/maven_build
     - name: Docker build (custom action)
       uses: ./.github/actions/docker_build
-    - name: List docker images
-      run: docker image ls
+      with:
+        image_name: $docker_image_name
+        tag_name: $docker_tag_name
+  list_images:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: List docker images
+        run: docker image ls
