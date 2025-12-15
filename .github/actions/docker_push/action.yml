@@ -1,0 +1,17 @@
+name: Docker Push
+description: Tag and push a locally built image to Docker Hub
+inputs:
+  dockerhub_username:
+    description: "Docker Hub username"
+    required: true
+  image_ref:
+    description: "Local image reference in the form name:tag (e.g., academy:tag-1)"
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Tag and push
+      shell: bash
+      run: |
+        docker tag "${{ inputs.image_ref }}" "${{ inputs.dockerhub_username }}/${{ inputs.image_ref }}"
+        docker push "${{ inputs.dockerhub_username }}/${{ inputs.image_ref }}"
